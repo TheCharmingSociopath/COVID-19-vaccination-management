@@ -5,4 +5,7 @@ from django.urls import reverse
 # Create your views here.
 def HomeView(request):
     return render(request, "home.html")
-    # return HttpResponse("Hello, world. You're at the polls index.")
+
+def StatisticsView(request): # How many vaccinated
+    pass
+
