@@ -21,10 +21,11 @@ from demo import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.HomeView, name='home'),
-    path('StatewiseCovidStats', views.StatewiseCovidStatsView, name='StatewiseCovidStats'),
-    path('StateVaccineStats', views.StateVaccineStatsView, name='StateVaccineStats'),
-    path('DistrictwiseCovidStats', views.DistrictwiseCovidStatsView, name='DistrictwiseCovidStats'),
-    path('DistrictwiseVaccineStats', views.DistrictwiseVaccineStatsView, name='DistrictwiseVaccineStats'),
-    path('CheckEligibilityForm', views.CheckEligibilityFormView, name='CheckEligibilityForm'),
-    path('CheckEligibilityResult', views.CheckEligibilityResultView, name='CheckEligibilityResult')
+    path('StatewiseCovidStats/', views.StatewiseCovidStatsView, name='StatewiseCovidStats'),
+    path('StateVaccineStats/', views.StateVaccineStatsView, name='StateVaccineStats'),
+    path('DistrictwiseCovidStats/', views.DistrictwiseCovidStatsView, name='DistrictwiseCovidStats'),
+    path('DistrictwiseVaccineStats/', views.DistrictwiseVaccineStatsView, name='DistrictwiseVaccineStats'),
+    path('CheckEligibilityForm/', views.CheckEligibilityFormView, name='CheckEligibilityForm'),
+    path('EligibleForVaccine/', views.EligibleForVaccine, name='EligibleForVaccine'),
+    path('NotEligibleForVaccine/', views.NotEligibleForVaccine, name='NotEligibleForVaccine')
 ]

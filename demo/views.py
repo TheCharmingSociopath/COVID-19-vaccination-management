@@ -82,16 +82,27 @@ def CheckEligibilityFormView(request):
         form = CheckEligibilityForm(request.POST, request.FILES)
         if form.is_valid():
             # process form
-            return HttpResponseRedirect(reverse('CheckEligibilityResult')) ## Redirect to the page with a form
+            print("abcdfsfsfls")
+            data = form.cleaned_data
+            aadhar = data['aadhar']
+            name = data['name']
+            age = data['age']
+            if CheckEligibilityHelper(aadhar,name,age):
+                return HttpResponseRedirect(reverse('EligibleForVaccine')) ## Redirect to the page with a form
+            else:
+                return HttpResponseRedirect(reverse('NotEligibleForVaccine'))
         else:
             # error page
             pass
     else: # GET request
-        default_adhaar = "666"
-        form = CheckEligibilityForm(initial={"adhaar" : default_adhaar})
+        form = CheckEligibilityForm()
         return render(request, "check-eligibility-form.html", {'form' : form})
 
-def CheckEligibilityResultView(request):
-    return render(request, "check-eligibility-result.html")
+def EligibleForVaccine(request):
+    return render(request, "eligible-for-vaccine.html")
+
+def NotEligibleForVaccine(request):
+    return render(request, "not-eligible-for-vaccine.html")
+
 
 ## END OF BANSAL AREA

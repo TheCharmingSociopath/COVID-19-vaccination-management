@@ -9,4 +9,7 @@ class CheckEligibilityForm(forms.Form):
     #     self.some_field = tuple([(payload.id, payload.version) for payload in Model_Name.objects.filter(some_field=kwargs.pop('some_field_value'), deleted=False)])
     #     super(CheckEligibilityForm, self).__init__(*args, **kwargs)
 
-    adhaar = forms.CharField(max_length=20)
+    aadhar = forms.CharField(max_length=20)
+    name = forms.CharField(label = 'name', max_length = 100)
+    age = forms.IntegerField(label = 'age')
+
