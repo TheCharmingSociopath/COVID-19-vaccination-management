@@ -6,10 +6,6 @@ class States(models.Model):
     name = models.CharField(max_length=255)
     number_of_active_cases = models.IntegerField()
 
-class Vaccinated(models.Model):
-    name = models.CharField(max_length=255)
-    number_of_vaccinated = models.IntegerField()
-
 class Districts(models.Model):
     name = models.CharField(max_length=255)
     number_of_active_cases = models.IntegerField()
