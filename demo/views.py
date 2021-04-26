@@ -99,7 +99,10 @@ def CheckEligibilityFormView(request):
         return render(request, "check-eligibility-form.html", {'form' : form})
 
 def EligibleForVaccine(request, district):
-    return render(request, "eligible-for-vaccine.html", {'district' : district})
+    #function to get list of vaccine centers from 
+    
+    vaccine_centers = ['cen1','cen2','cen3']
+    return render(request, "eligible-for-vaccine.html", {'district' : district, 'vaccine_centers' : vaccine_centers})
 
 def NotEligibleForVaccine(request):
     return render(request, "not-eligible-for-vaccine.html")
