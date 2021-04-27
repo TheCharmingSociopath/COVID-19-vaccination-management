@@ -2,14 +2,17 @@
 {% load static %}
 
 {% block title %}
-Dose given
+Appointment Booked
 {% endblock %}
 
 {% block header %}
 {% endblock %}
 
+
 {% block content %}
+<div class="container">
+    <div>
+        Your appointment is booked at {{ centre }} for {{ date }} at {{ time }}
+    </div>
 <div>
-    <p>Dose given update status</p>
-</div>
 {% endblock %}

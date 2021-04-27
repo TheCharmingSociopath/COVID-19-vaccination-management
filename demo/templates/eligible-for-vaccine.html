@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block title %}
+Register
+{% endblock %}
+
 {% block header %}
   <link href="{% static 'css/form.css' %}" rel="stylesheet" />
   <script src="{% static 'js/form.js' %}"></script>
@@ -9,9 +13,9 @@
 
 {% block content %}
 <div class="container">
-    <div>You are eligible</div> 
-    <div>District : {{ district }}</div>
-    <div>Aadhar Number : {{ aadhar }}</div>
+    <div class="eligibleMsg">You are eligible for Vaccination</div> 
+    <div class="bigText">District : {{ district }}</div>
+    <div class="bigText">Aadhar Number : {{ aadhar }}</div>
     <form class="well form-horizontal" method="post"  id="eligibility_form">
         {% csrf_token %}
             

@@ -14,6 +14,6 @@ class CheckEligibilityForm(forms.Form):
 
 
 class RegisterForVaccine(forms.Form):
-    center = forms.CharField(max_length = 300)
+    centre = forms.CharField(max_length = 300)
     date = forms.DateField()
     time = forms.TimeField(widget=forms.TimeInput(format='%H:%M'))
