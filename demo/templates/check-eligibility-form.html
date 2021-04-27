@@ -1,8 +1,15 @@
-<form method="post">
-    {% csrf_token %}
-    <label>Aadhar Number</label>
-    <input type="text" name="aadhar">
-    <label>District</label>
-    <input type="text" name="district">
-    <input type="submit" value="Submit">
-</form>
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div>
+    <form method="post">
+        {% csrf_token %}
+        <label>Aadhar Number</label>
+        <input type="text" name="aadhar">
+        <label>District</label>
+        <input type="text" name="district">
+        <input type="submit" value="Submit">
+    </form>
+</div>
+{% endblock %}
