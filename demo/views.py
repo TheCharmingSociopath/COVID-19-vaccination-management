@@ -114,7 +114,7 @@ def EligibleForVaccine(request, district, aadhar):
     #function to get list of vaccine centers from 
     
     vaccine_centers = ['cen1','cen2','cen3']
-    return render(request, "eligible-for-vaccine.html", {'district' : district, 'vaccine_centers' : vaccine_centers})
+    return render(request, "eligible-for-vaccine.html", {'aadhar' : aadhar, 'district' : district, 'vaccine_centers' : vaccine_centers})
 
 def NotEligibleForVaccine(request):
     return render(request, "not-eligible-for-vaccine.html")

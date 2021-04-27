@@ -1,7 +1,40 @@
-You are eligible 
-District : <b>{{ district }}</b>
-<ul>
-    {% for value in vaccine_centers %}
-        <li>{{value}}</li>
-    {% endfor %}
-</ul>
+{% extends "base.html" %}
+{% load static %}
+
+{% block header %}
+  <link href="{% static 'css/form.css' %}" rel="stylesheet" />
+  <script src="{% static 'js/form.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+<div>
+    <p>You are eligible</p> 
+    <p>District : <b>{{ district }}</b></p>
+    <p>Aadhar Number : <b>{{ aadhar }}</b></p>
+    <form>
+        <div>
+            <div>
+                <label for="centre">Vaccination centre : </label>
+                <select id="centre" name="centre" required>
+                    {% for value in vaccine_centers %}
+                        <option value="{{ value }}">{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="date">Date : </label>
+                <input type="date" id="date" name="date" min="2021-01-01" max="2021-04-30" required>
+            </div>
+            <div>
+                <label for="time">Time : </label>
+                <input type="time" id="time" name="time" min="09:00" max="18:00" required>
+                <small>Office hours are 9am to 6pm</small>
+            </div>
+            <div>
+                <input type="submit">
+            </div>
+        </div>
+    </form>
+<div>
+{% endblock %}
