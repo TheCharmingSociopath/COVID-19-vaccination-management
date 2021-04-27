@@ -1,0 +1,7 @@
+{% load static %}
+<form method="post">
+    {% csrf_token %}
+    <label for="id_aadhar">Aadhar:</label>
+    <input type="text" name="aadhar" maxlength="20" required="" id="id_aadhar">
+    <input type="submit" value="Submit">
+</form>

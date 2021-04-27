@@ -71,6 +71,19 @@ def DistrictwiseVaccineStatsView(request):
     # bind lst to request and return
     return render(request, "districtwise-vaccination-stats.html")
 
+def VaccinationCentre(request):
+    # download csv that has vaccination details
+    # process csv into a list called lst
+    # bind lst to request and return
+    if request.method == 'POST':
+        # form = CheckAadarNumber  ye baad me kardena warna merge conflict 
+        return HttpResponseRedirect(reverse('VaccineCentreUpdateStatus'))
+    else:
+        return render(request, "vaccine-centre-index.html")
+
+def VaccineCentreUpdateStatus(request):
+    return render(request, "vaccine-centre-update-status.html")
+
 ## END OF SARTHAK AREA
 
 ## =======================================================================
