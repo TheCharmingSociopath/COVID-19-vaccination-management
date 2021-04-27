@@ -16,7 +16,7 @@ Register
     <div class="eligibleMsg">You are eligible for Vaccination</div> 
     <div class="bigText">District : {{ district }}</div>
     <div class="bigText">Aadhar Number : {{ aadhar }}</div>
-    <form class="well form-horizontal" method="post"  id="eligibility_form">
+    <form class="well form-horizontal formClass" method="post"  id="eligibility_form">
         {% csrf_token %}
             
         <legend><h2><b>Vaccine Registration Form</b></h2></legend><br>
