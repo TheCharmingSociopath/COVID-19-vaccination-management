@@ -1,14 +1,51 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="utf-8" />
   <title>PAN India Vaccination Portal</title>
-  {% block header %}
+
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <link href="{% static 'css/navbar.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/base.css' %}" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+{% block header %}
   {% endblock %}
 </head>
 
 <body>
+  <nav class="navbar navbar-expand-custom navbar-mainbg">
+    <div class="navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+              <a class="nav-link" href="/"><i class="fas fa-tachometer-alt"></i>Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/CheckEligibilityForm/"><i class="fas fa-tachometer-alt"></i>Check Eligibility</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/VaccinationCentre/"><i class="fas fa-tachometer-alt"></i>Vaccine Center</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/StateVaccineStats/"><i class="fas fa-tachometer-alt"></i>Vaccination Data</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/StatewiseCovidStats/"><i class="fas fa-tachometer-alt"></i>Covid Data</a>
+          </li>
+      </ul>
+    </div>
+  </nav>
   <div>
     {% block content %}
     {% endblock %}
