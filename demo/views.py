@@ -82,15 +82,14 @@ def CheckEligibilityFormView(request):
         form = CheckEligibilityForm(request.POST, request.FILES)
         if form.is_valid():
             # process form
-            print("abcdfsfsfls")
             data = form.cleaned_data
             aadhar = data['aadhar']
-            name = data['name']
-            age = data['age']
-            if CheckEligibilityHelper(aadhar,name,age):
-                return HttpResponseRedirect(reverse('EligibleForVaccine')) ## Redirect to the page with a form
-            else:
-                return HttpResponseRedirect(reverse('NotEligibleForVaccine'))
+            district = data['district']
+            # if True
+            url = 'EligibleForVaccine'
+            return HttpResponseRedirect(reverse(url,args=[district, aadhar])) ## Redirect to the page with a form
+            # else:
+            #     return HttpResponseRedirect(reverse('NotEligibleForVaccine'))
         else:
             # error page
             pass
@@ -98,8 +97,11 @@ def CheckEligibilityFormView(request):
         form = CheckEligibilityForm()
         return render(request, "check-eligibility-form.html", {'form' : form})
 
-def EligibleForVaccine(request):
-    return render(request, "eligible-for-vaccine.html")
+def EligibleForVaccine(request, district, aadhar):
+    #function to get list of vaccine centers from 
+    
+    vaccine_centers = ['cen1','cen2','cen3']
+    return render(request, "eligible-for-vaccine.html", {'district' : district, 'vaccine_centers' : vaccine_centers})
 
 def NotEligibleForVaccine(request):
     return render(request, "not-eligible-for-vaccine.html")

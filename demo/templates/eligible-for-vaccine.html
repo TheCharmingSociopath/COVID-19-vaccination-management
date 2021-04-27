@@ -1,1 +1,7 @@
-You are eligible
+You are eligible 
+District : <b>{{ district }}</b>
+<ul>
+    {% for value in vaccine_centers %}
+        <li>{{value}}</li>
+    {% endfor %}
+</ul>

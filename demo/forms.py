@@ -10,6 +10,5 @@ class CheckEligibilityForm(forms.Form):
     #     super(CheckEligibilityForm, self).__init__(*args, **kwargs)
 
     aadhar = forms.CharField(max_length=20)
-    name = forms.CharField(label = 'name', max_length = 100)
-    age = forms.IntegerField(label = 'age')
+    district = forms.CharField(label = 'district', max_length = 100)
 
