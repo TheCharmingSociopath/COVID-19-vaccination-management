@@ -12,3 +12,8 @@ class CheckEligibilityForm(forms.Form):
     aadhar = forms.CharField(max_length=20)
     district = forms.CharField(label = 'district', max_length = 100)
 
+
+class RegisterForVaccine(forms.Form):
+    centre = forms.CharField(max_length = 300)
+    date = forms.DateField()
+    time = forms.TimeField(widget=forms.TimeInput(format='%H:%M'))

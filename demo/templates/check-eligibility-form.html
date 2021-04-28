@@ -1,8 +1,57 @@
-<form method="post">
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Check Eligibility
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <form class="well form-horizontal formClass" method="post"  id="eligibility_form">
     {% csrf_token %}
-    <label>Aadhar Number</label>
-    <input type="text" name="aadhar">
-    <label>District</label>
-    <input type="text" name="district">
-    <input type="submit" value="Submit">
-</form>
+        
+        <legend><h2><b>Eligibility Form</b></h2></legend><br>
+        
+        <div class="form-group">
+            <label class="col-md-4 control-label">Aadhar Number</label>  
+            <div class="col-md-4 inputGroupContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    <input  name="aadhar" placeholder="Aadhar number" class="form-control"  type="text" required>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group"> 
+            <label class="col-md-4 control-label">District</label>
+            <div class="col-md-4 selectContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span>
+                    <select name="district" class="form-control selectpicker" required>
+                        <option value="">Select your current District</option>
+                        <option>District 1</option>
+                        <option>District 2</option>
+                        <option>District 3</option>
+                        <option>District 4</option>
+                        <option>District 5</option>
+                        <option>District 6</option>
+                        <option>District 7</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Button -->
+        <div class="form-group">
+            <label class="col-md-4 control-label"></label>
+            <div class="col-md-4">
+                <input type="submit" value="Submit" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

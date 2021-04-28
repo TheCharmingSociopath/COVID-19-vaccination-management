@@ -1,7 +1,38 @@
+{% extends "base.html" %}
 {% load static %}
-<form method="post">
+
+{% block title %}
+Dose log
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <form class="well form-horizontal formClass" method="post"  id="eligibility_form">
     {% csrf_token %}
-    <label for="id_aadhar">Aadhar:</label>
-    <input type="text" name="aadhar" maxlength="20" required="" id="id_aadhar">
-    <input type="submit" value="Submit">
-</form>
+        
+        <legend><h2><b>Vaccination Form</b></h2></legend>
+        
+        <div class="form-group">
+            <label class="col-md-4 control-label">Aadhar Number</label>  
+            <div class="col-md-4 inputGroupContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    <input  name="aadhar" placeholder="Aadhar number" class="form-control"  type="text" required>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Button -->
+        <div class="form-group">
+            <label class="col-md-4 control-label"></label>
+            <div class="col-md-4">
+                <input type="submit" value="Submit" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
