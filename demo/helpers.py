@@ -81,8 +81,8 @@ def StatewiseInfectionGradient():
         LAST_DISPATCH = datetime.now()
         return Normalise(number_of_active_cases)
     ## Return gradient number of active cases otherwise
-    number_of_days = (datetime.now() - LAST_DISPATCH).days
-    grad = { key : (number_of_active_cases[key] - PREVIOUS_ACTIVE_CASES[key]) / number_of_days for key in STATES }
+    number_of_days = (datetime.now() - LAST_DISPATCH).days + 5
+    grad = { key : (number_of_active_cases[key] - PREVIOUS_ACTIVE_CASES[key]) / (number_of_days) for key in STATES }
     PREVIOUS_ACTIVE_CASES = number_of_active_cases
     LAST_DISPATCH = datetime.now()
     return Normalise(grad)
