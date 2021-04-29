@@ -21,6 +21,7 @@ from demo import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.HomeView, name='home'),
+    path('AppointmentBooked/<str:centre>/<str:date>/<str:time>/', views.AppointmentBookedView, name='AppointmentBooked'),
     path('StatewiseCovidStats/', views.StatewiseCovidStatsView, name='StatewiseCovidStats'),
     path('StateVaccineStats/', views.StateVaccineStatsView, name='StateVaccineStats'),
     path('DistrictwiseCovidStats/', views.DistrictwiseCovidStatsView, name='DistrictwiseCovidStats'),

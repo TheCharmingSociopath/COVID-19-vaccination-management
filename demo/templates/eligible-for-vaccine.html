@@ -1,7 +1,67 @@
-You are eligible 
-District : <b>{{ district }}</b>
-<ul>
-    {% for value in vaccine_centers %}
-        <li>{{value}}</li>
-    {% endfor %}
-</ul>
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block header %}
+  <link href="{% static 'css/form.css' %}" rel="stylesheet" />
+  <script src="{% static 'js/form.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="eligibleMsg">You are eligible for Vaccination</div> 
+    <div class="bigText">District : {{ district }}</div>
+    <div class="bigText">Aadhar Number : {{ aadhar }}</div>
+    <form class="well form-horizontal formClass" method="post"  id="eligibility_form">
+        {% csrf_token %}
+            
+        <legend><h2><b>Vaccine Registration Form</b></h2></legend><br>
+        
+        <div class="form-group"> 
+            <label class="col-md-4 control-label">Select a Vaccination Centre</label>
+            <div class="col-md-4 selectContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span>
+                    <select name="centre" class="form-control selectpicker" required>
+                        {% for value in vaccine_centers %}
+                            <option value="{{ value }}">{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>   
+        </div>
+        <div class="form-group"> 
+            <label class="col-md-4 control-label">Select a Date</label>
+            <div class="col-md-4 selectContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    <input type="date" id="date" name="date" min="2021-01-01" max="2021-04-30" required>
+                </div>
+            </div>   
+        </div>
+            
+        <div class="form-group"> 
+            <label class="col-md-4 control-label">Select a Time</label>
+                <div class="col-md-4 selectContainer">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                        <input type="time" id="time" name="time" min="09:00" max="18:00" required>
+                    </div>
+                    <div><small>(Office hours are 9am to 6pm)</small></div>
+                </div>   
+            </div>
+                
+        <!-- Button -->
+        <div class="form-group">
+            <label class="col-md-4 control-label"></label>
+            <div class="col-md-4">
+                <input type="submit" value="Submit" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+<div>
+{% endblock %}

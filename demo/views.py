@@ -111,13 +111,28 @@ def CheckEligibilityFormView(request):
         return render(request, "check-eligibility-form.html", {'form' : form})
 
 def EligibleForVaccine(request, district, aadhar):
-    #function to get list of vaccine centers from 
-    
-    vaccine_centers = ['cen1','cen2','cen3']
-    return render(request, "eligible-for-vaccine.html", {'district' : district, 'vaccine_centers' : vaccine_centers})
+    if request.method == 'POST':
+        form = RegisterForVaccine(request.POST, request.FILES)
+        if form.is_valid():
+            # process form
+            data = form.cleaned_data
+            centre = data['centre']
+            date = data['date']
+            time = data['time']
+            return HttpResponseRedirect(reverse('AppointmentBooked',args=[centre,date,time])) ## Redirect to the page with a form
+        else:
+            # error page
+            pass
+    else: # GET request
+        #function to get list of vaccine centers from 
+        form = RegisterForVaccine()    
+        vaccine_centers = ['cen1','cen2','cen3']
+        return render(request, "eligible-for-vaccine.html", {'aadhar' : aadhar, 'district' : district, 'vaccine_centers' : vaccine_centers})
 
 def NotEligibleForVaccine(request):
     return render(request, "not-eligible-for-vaccine.html")
 
+def AppointmentBookedView(request,centre,date,time):
+    return render(request, "appointment-booked.html", {'centre' : centre, 'date' : date, 'time' : time})
 
 ## END OF BANSAL AREA
