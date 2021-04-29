@@ -2,6 +2,10 @@
 
 `pip install -r requirements.txt`
 
+# Setting up the data
+
+`bash initialize.sh`
+
 # Usage
 
 - `python3 manage.py makemigrations`
