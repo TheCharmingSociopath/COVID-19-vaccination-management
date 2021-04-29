@@ -27,7 +27,7 @@ Register
                     <span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span>
                     <select name="centre" class="form-control selectpicker" required>
                         {% for id, address in vaccine_centers.items %}
-                            <option value="{{ address }}">{{ address }}</option>
+                            <option value="{{ id }}">{{ address }}</option>
                         {% endfor %}
                     </select>
                 </div>

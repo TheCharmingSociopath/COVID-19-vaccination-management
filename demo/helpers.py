@@ -40,8 +40,6 @@ def ReduceVaccineCountAtCenter(center_id):
 
 def DistributeCenterToState(number):
     # weighted ratio of StatewisePopulation, StatewiseVaccinationCenterPopulationRatio, StatewiseInfectionGradient 
-    new_vaccines = CenterVaccinationStore.objects.all()[0].number_of_vaccines - number
-    CenterVaccinationStore.objects.all().update(number_of_vaccines=new_vaccines)
     statewise_population, r1 = StatewisePopulation()
     r2 = StatewiseVaccinationCenterPopulationRatio(statewise_population)
     r3 = StatewiseInfectionGradient()
@@ -53,6 +51,9 @@ def DistributeCenterToState(number):
     for state in STATES:
         new_vaccs = States.objects.get(state_code=state).number_of_vaccines + distribution[state]
         States.objects.filter(state_code=state).update(number_of_vaccines=new_vaccs)
+    
+    new_vaccines = CenterVaccinationStore.objects.all()[0].number_of_vaccines - number
+    CenterVaccinationStore.objects.all().update(number_of_vaccines=new_vaccines)
     # return distribution
 
 def StatewisePopulation():
@@ -82,7 +83,7 @@ def StatewiseInfectionGradient():
         return Normalise(number_of_active_cases)
     ## Return gradient number of active cases otherwise
     number_of_days = (datetime.now() - LAST_DISPATCH).days + 5
-    grad = { key : (number_of_active_cases[key] - PREVIOUS_ACTIVE_CASES[key]) / (number_of_days) for key in STATES }
+    grad = { key : (number_of_active_cases[key]+5 - PREVIOUS_ACTIVE_CASES[key]) / (number_of_days) for key in STATES }
     PREVIOUS_ACTIVE_CASES = number_of_active_cases
     LAST_DISPATCH = datetime.now()
     return Normalise(grad)
@@ -115,3 +116,11 @@ def GetStateWiseDistribution():
 
 def GetCenterVaccinationStore():
     return CenterVaccinationStore.objects.all()[0].number_of_vaccines
+
+def GetCentreAddress(centre):
+    #get centre address from id
+    pass
+
+def BookAppointmentAtVaccineCentre(centre,date,time):
+    #book appointment
+    pass

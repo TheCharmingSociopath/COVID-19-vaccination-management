@@ -104,8 +104,9 @@ def CheckEligibilityFormView(request):
             else:
                 return HttpResponseRedirect(reverse('NotEligibleForVaccine'))
         else:
+            print("btbtbtbt")
             # error page
-            pass
+            # pass
     else: # GET request
         form = CheckEligibilityForm()
         district = GetListOfDistricts()
@@ -136,7 +137,12 @@ def NotEligibleForVaccine(request):
     return render(request, "not-eligible-for-vaccine.html")
 
 def AppointmentBookedView(request,centre,date,time):
-    return render(request, "appointment-booked.html", {'centre' : centre, 'date' : date, 'time' : time})
+    #function to get centre address
+    # centre_add = GetCentreAddress(centre)
+    centre_add = "temp"
+    #add this to database
+    #BookAppointmentAtVaccineCentre(centre,date,time)
+    return render(request, "appointment-booked.html", {'centre_add' : centre_add, 'date' : date, 'time' : time})
 
 def AdminDistributeView(request):
     print("distribute view called...")
