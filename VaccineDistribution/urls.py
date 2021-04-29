@@ -19,8 +19,9 @@ from django.urls import include, path
 from demo import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('', views.HomeView, name='home'),
+    path('admin/', views.AdminView, name='admin'),
+    path('adminDistribute/', views.AdminDistributeView, name='adminDistribute'),
     path('AppointmentBooked/<str:centre>/<str:date>/<str:time>/', views.AppointmentBookedView, name='AppointmentBooked'),
     path('StatewiseCovidStats/', views.StatewiseCovidStatsView, name='StatewiseCovidStats'),
     path('StateVaccineStats/', views.StateVaccineStatsView, name='StateVaccineStats'),

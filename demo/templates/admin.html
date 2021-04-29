@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Admin
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="homeTitle">Admin Portal</div>
+    <div>Centre Vaccine Count : {{ centre_vaccine_count }}</div>
+    <div>
+        <table class="table table-dark">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Population</th>
+                <th scope="col">Number of People Vaccinated</th>
+                <th scope="col">Number of Vaccine Available</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for state in state_data %}
+                <tr class="tableRow">
+                    <td>{{ state.state_name }}</td>
+                    <td>{{ state.population }}</td>
+                    <td>{{ state.number_of_people_vaccinated }}</td>
+                    <td>{{ state.number_of_vaccine_available }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+<div>
+{% endblock %}

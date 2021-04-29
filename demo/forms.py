@@ -17,3 +17,6 @@ class RegisterForVaccine(forms.Form):
     centre = forms.CharField(max_length = 300)
     date = forms.DateField()
     time = forms.TimeField(widget=forms.TimeInput(format='%H:%M'))
+
+class AdminForm(forms.Form):
+    vaccine_number = forms.IntegerField()

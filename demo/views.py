@@ -109,6 +109,7 @@ def CheckEligibilityFormView(request):
     else: # GET request
         form = CheckEligibilityForm()
         district = GetListOfDistricts()
+        # print("district = ", district)
         return render(request, "check-eligibility-form.html", {'form' : form, 'district' : district})
 
 def EligibleForVaccine(request, district_id, aadhar):
@@ -128,7 +129,7 @@ def EligibleForVaccine(request, district_id, aadhar):
         #function to get list of vaccine centers from 
         form = RegisterForVaccine()    
         vaccine_centers = VaccineAvailabilityInDistrict(district_id)
-        print("centers = ",vaccine_centers)
+        # print("centers = ",vaccine_centers)
         return render(request, "eligible-for-vaccine.html", {'aadhar' : aadhar, 'district_id' : district_id, 'vaccine_centers' : vaccine_centers})
 
 def NotEligibleForVaccine(request):
@@ -136,5 +137,36 @@ def NotEligibleForVaccine(request):
 
 def AppointmentBookedView(request,centre,date,time):
     return render(request, "appointment-booked.html", {'centre' : centre, 'date' : date, 'time' : time})
+
+def AdminDistributeView(request):
+    print("distribute view called...")
+    if request.method == 'POST':
+        form = AdminForm(request.POST, request.FILES)
+        if form.is_valid():
+            # process form
+            data = form.cleaned_data
+            vaccine_number = data['vaccine_number']
+            print("number = ", vaccine_number)
+            DistributeCenterToState(vaccine_number)
+            print("data updated")
+            # return HttpResponseRedirect(reverse('admin')) ## Redirect to the page with a form
+            return HttpResponseRedirect(reverse('admin')) ## Redirect to the page with a form
+        else:
+            # error page
+            pass
+    else: # GET request
+        centre_vaccine_count = GetCenterVaccinationStore()
+        return render(request, "admin-distribute.html", {'centre_vaccine_count': centre_vaccine_count})
+
+
+def AdminView(request):
+    print("admin view called...")
+    centre_vaccine_count = GetCenterVaccinationStore()
+    state_data = GetStateWiseDistribution()
+    s = 0
+    for st in state_data:
+        s += st['number_of_vaccine_available']
+    print("sum = ", s)
+    return render(request, "admin.html", {'state_data': state_data, 'centre_vaccine_count': centre_vaccine_count})
 
 ## END OF BANSAL AREA

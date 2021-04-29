@@ -40,6 +40,8 @@ def ReduceVaccineCountAtCenter(center_id):
 
 def DistributeCenterToState(number):
     # weighted ratio of StatewisePopulation, StatewiseVaccinationCenterPopulationRatio, StatewiseInfectionGradient 
+    new_vaccines = CenterVaccinationStore.objects.all()[0].number_of_vaccines - number
+    CenterVaccinationStore.objects.all().update(number_of_vaccines=new_vaccines)
     statewise_population, r1 = StatewisePopulation()
     r2 = StatewiseVaccinationCenterPopulationRatio(statewise_population)
     r3 = StatewiseInfectionGradient()
@@ -47,10 +49,17 @@ def DistributeCenterToState(number):
     distribution = { key : round(r[key] * number) for key in r }
     rem = number - sum(list(distribution.values()))
     distribution[STATES[-1]] += rem
-    return distribution
+    print("done here")
+    for state in STATES:
+        new_vaccs = States.objects.get(state_code=state).number_of_vaccines + distribution[state]
+        States.objects.filter(state_code=state).update(number_of_vaccines=new_vaccs)
+    # return distribution
 
 def StatewisePopulation():
-    lst = [person.state.state_code for person in Population.objects.all() if person.priority <= CURRENT_ACTIVE_PRIORITY and person.vaccination_status != "vaccinated"]
+    lst = []
+    for person in Population.objects.all():
+        if person.priority <= CURRENT_ACTIVE_PRIORITY and person.vaccination_status != "vaccinated":
+            lst.append(person.state.state_code)
     statewise_population = dict(Counter(lst))
     for key in STATES:
         if key not in statewise_population:
@@ -89,3 +98,20 @@ def Normalise(dick):
 def GetListOfDistricts():
     lst = { district.name : district.pk for district in Districts.objects.all() }
     return lst
+
+def GetStateWiseDistribution():
+    ret = []
+    population, _ = StatewisePopulation()
+    for st in STATES:
+        state = States.objects.get(state_code=st)
+        ret.append({
+            'state_name' : state.name,
+            'population' : population[st],
+            'active_case' : state.number_of_active_cases,
+            'number_of_people_vaccinated' : state.number_of_people_vaccinated,
+            'number_of_vaccine_available' : state.number_of_vaccines
+        })
+    return ret
+
+def GetCenterVaccinationStore():
+    return CenterVaccinationStore.objects.all()[0].number_of_vaccines
