@@ -97,20 +97,21 @@ def CheckEligibilityFormView(request):
             # process form
             data = form.cleaned_data
             aadhar = data['aadhar']
-            district = data['district']
-            # if True
-            url = 'EligibleForVaccine'
-            return HttpResponseRedirect(reverse(url,args=[district, aadhar])) ## Redirect to the page with a form
-            # else:
-            #     return HttpResponseRedirect(reverse('NotEligibleForVaccine'))
+            district_id = data['district_id']
+            if CheckEligibilityHelper(aadhar, district_id):
+                url = 'EligibleForVaccine'
+                return HttpResponseRedirect(reverse(url,args=[district_id, aadhar])) ## Redirect to the page with a form
+            else:
+                return HttpResponseRedirect(reverse('NotEligibleForVaccine'))
         else:
             # error page
             pass
     else: # GET request
         form = CheckEligibilityForm()
-        return render(request, "check-eligibility-form.html", {'form' : form})
+        district = GetListOfDistricts()
+        return render(request, "check-eligibility-form.html", {'form' : form, 'district' : district})
 
-def EligibleForVaccine(request, district, aadhar):
+def EligibleForVaccine(request, district_id, aadhar):
     if request.method == 'POST':
         form = RegisterForVaccine(request.POST, request.FILES)
         if form.is_valid():
@@ -126,8 +127,9 @@ def EligibleForVaccine(request, district, aadhar):
     else: # GET request
         #function to get list of vaccine centers from 
         form = RegisterForVaccine()    
-        vaccine_centers = ['cen1','cen2','cen3']
-        return render(request, "eligible-for-vaccine.html", {'aadhar' : aadhar, 'district' : district, 'vaccine_centers' : vaccine_centers})
+        vaccine_centers = VaccineAvailabilityInDistrict(district_id)
+        print("centers = ",vaccine_centers)
+        return render(request, "eligible-for-vaccine.html", {'aadhar' : aadhar, 'district_id' : district_id, 'vaccine_centers' : vaccine_centers})
 
 def NotEligibleForVaccine(request):
     return render(request, "not-eligible-for-vaccine.html")

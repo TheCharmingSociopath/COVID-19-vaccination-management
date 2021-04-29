@@ -13,7 +13,8 @@ WEIGHT2 = 0.1 # Ratio of number of vaccination center per unit population
 WEIGHT3 = 0.3 # Gradient of active cases
 
 def CheckEligibilityHelper(aadhar, district):
-    priority = Population.objects.filter(adhaar=aadhar, deleted=False).priority
+    priority = Population.objects.filter(adhaar=aadhar)[0].priority
+    print("priority = ", priority)
     if priority <= GetCurrentPriority(district):
         return True
     return False
@@ -24,8 +25,8 @@ def GetCurrentPriority(district):
 def UpdatePriority(priority):
     CURRENT_ACTIVE_PRIORITY = priority
 
-def VaccineAvailabilityInDistrict(district):
-    center_list = {center.id : center.address for center in VaccinationCenter.objects.filter(pk=district, deleted=False) if center.number_of_vaccines > 0}
+def VaccineAvailabilityInDistrict(district_id):
+    center_list = {center.id : center.address for center in VaccinationCenter.objects.filter(district_id=district_id) if center.number_of_vaccines > 0}
     return center_list
 
 def ReduceVaccineCountAtCenter(center_id):
@@ -84,3 +85,7 @@ def Normalise(dick):
     for key in dick:
         dick[key] /= total
     return dick
+
+def GetListOfDistricts():
+    lst = { district.name : district.pk for district in Districts.objects.all() }
+    return lst
