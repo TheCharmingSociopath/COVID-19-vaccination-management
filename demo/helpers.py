@@ -1,17 +1,19 @@
-from models.py import *
+from .models import *
 from collections import Counter
 from datetime import timedelta, datetime
+import copy
+
 
 CURRENT_ACTIVE_PRIORITY = 1
-STATES = ['IN-AN', 'IN-AP', 'IN-AR', 'IN-AS', 'IN-BR', 'IN-CH', 'IN-CT', 'IN-DN', 'IN-DL', 'IN-GA', 'IN-GJ', 'IN-HR', 'IN-HP', 'IN-JK', 'IN-JH', 'IN-KA', 'IN-KL', 'IN-LA', 'IN-LD', 'IN-MP', 'IN-MH', 'IN-MN', 'IN-ML', 'IN-MZ', 'IN-NL', 'IN-OR', 'IN-PY', 'IN-PB', 'IN-RJ', 'IN-SK', 'IN-TN', 'IN-TG', 'IN-TR', 'IN-UP', 'IN-UT', 'IN-WB']
 LAST_DISPATCH = 0
+STATES = ['IN-AN', 'IN-AP', 'IN-AR', 'IN-AS', 'IN-BR', 'IN-CH', 'IN-CT', 'IN-DN', 'IN-DL', 'IN-GA', 'IN-GJ', 'IN-HR', 'IN-HP', 'IN-JK', 'IN-JH', 'IN-KA', 'IN-KL', 'IN-LA', 'IN-LD', 'IN-MP', 'IN-MH', 'IN-MN', 'IN-ML', 'IN-MZ', 'IN-NL', 'IN-OR', 'IN-PY', 'IN-PB', 'IN-RJ', 'IN-SK', 'IN-TN', 'IN-TG', 'IN-TR', 'IN-UP', 'IN-UT', 'IN-WB']
 PREVIOUS_ACTIVE_CASES = {}
 WEIGHT1 = 0.6 # Ratio of Population
 WEIGHT2 = 0.1 # Ratio of number of vaccination center per unit population
 WEIGHT3 = 0.3 # Gradient of active cases
 
 def CheckEligibilityHelper(aadhar, district):
-    priority = Population.objects.filter(adhaar=aadhar, deleted=False)
+    priority = Population.objects.filter(adhaar=aadhar, deleted=False).priority
     if priority <= GetCurrentPriority(district):
         return True
     return False
@@ -23,7 +25,7 @@ def UpdatePriority(priority):
     CURRENT_ACTIVE_PRIORITY = priority
 
 def VaccineAvailabilityInDistrict(district):
-    center_list = {center.id : center.address for center in VaccinationCenter.objects.filter(district=district, deleted=False) if center.number_of_vaccines > 0}
+    center_list = {center.id : center.address for center in VaccinationCenter.objects.filter(pk=district, deleted=False) if center.number_of_vaccines > 0}
     return center_list
 
 def ReduceVaccineCountAtCenter(center_id):
@@ -41,17 +43,18 @@ def DistributeCenterToState(number):
     r2 = StatewiseVaccinationCenterPopulationRatio(statewise_population)
     r3 = StatewiseInfectionGradient()
     r = { key : WEIGHT1 * r1[key] + WEIGHT2 * r2[key] + WEIGHT3 * r3[key] for key in r1 }
-    print("sum of ratio", sum(list(r.values())))
-    distribution = { key : r[key] * number for key in r }
+    distribution = { key : round(r[key] * number) for key in r }
     rem = number - sum(list(distribution.values()))
-    print("rem: ", rem)
     distribution[STATES[-1]] += rem
     return distribution
 
 def StatewisePopulation():
     lst = [person.state.state_code for person in Population.objects.all() if person.priority <= CURRENT_ACTIVE_PRIORITY and person.vaccination_status != "vaccinated"]
     statewise_population = dict(Counter(lst))
-    return statewise_population, Normalise(ret)
+    for key in STATES:
+        if key not in statewise_population:
+            statewise_population[key] = 5
+    return statewise_population, Normalise(copy.deepcopy(statewise_population))
 
 def StatewiseVaccinationCenterPopulationRatio(statewise_population):
     lst = [center.state.state_code for center in VaccinationCenter.objects.all()]
@@ -60,15 +63,18 @@ def StatewiseVaccinationCenterPopulationRatio(statewise_population):
     return Normalise(ret)
 
 def StatewiseInfectionGradient():
+    global LAST_DISPATCH, PREVIOUS_ACTIVE_CASES
     number_of_active_cases = {state.state_code : state.number_of_active_cases for state in States.objects.all() }
 
-    PREVIOUS_ACTIVE_CASES = number_of_active_cases
     if LAST_DISPATCH == 0: # Return the current infection count the first time
+        PREVIOUS_ACTIVE_CASES = number_of_active_cases
         LAST_DISPATCH = datetime.now()
-        return number_of_active_cases
+        return Normalise(number_of_active_cases)
     ## Return gradient number of active cases otherwise
     number_of_days = (datetime.now() - LAST_DISPATCH).days
     grad = { key : (number_of_active_cases[key] - PREVIOUS_ACTIVE_CASES[key]) / number_of_days for key in STATES }
+    PREVIOUS_ACTIVE_CASES = number_of_active_cases
+    LAST_DISPATCH = datetime.now()
     return Normalise(grad)
 
 def Normalise(dick):
