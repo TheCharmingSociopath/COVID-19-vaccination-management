@@ -27,4 +27,4 @@ def PopulatePopulation(n):
         _, _ = Population.objects.get_or_create(adhaar=adhaar, name=name, age=age, address=address, district=district, state=state, profession=profession, priority=priority, vaccination_status=vaccination_status, vaccine_1_time=vaccine_1_time, vaccine_2_time=vaccine_2_time)
 
 if __name__ == "__main__":
-    PopulatePopulation(10000)
+    PopulatePopulation(1000)
