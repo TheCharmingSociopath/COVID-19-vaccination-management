@@ -18,6 +18,7 @@ WEIGHT2 = 0.1 # Ratio of number of vaccination center per unit population
 WEIGHT3 = 0.3 # Gradient of active cases
 
 def CheckEligibilityHelper(aadhar, district):
+    print("CAP: ", CURRENT_ACTIVE_PRIORITY)
     priority = Population.objects.filter(adhaar=aadhar)[0].priority
     if priority <= GetCurrentPriority(district):
         return True
@@ -194,4 +195,8 @@ def GetState(centre_id):
     state_id = VaccinationCenter.objects.get(pk=centre_id).state.id
     state_name = States.objects.get(pk=state_id).name
     return state_name
+
+def SetCurrentActivePriority(priority):
+    global CURRENT_ACTIVE_PRIORITY
+    CURRENT_ACTIVE_PRIORITY = priority
 

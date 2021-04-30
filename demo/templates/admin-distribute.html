@@ -26,6 +26,24 @@ Admin
                     </div>
                 </div>
             </div>
+
+            <div class="form-group"> 
+                <label class="col-md-4 control-label">Priority</label>
+                <div class="col-md-4 selectContainer">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span>
+                        <select name="priority" class="form-control selectpicker" required>
+                            {% for i in range %}
+                                {% if current_active_priority == i %}
+                                    <option selected value="{{ i }}">{{ i }}</option>
+                                {% else %}
+                                    <option value="{{ i }}">{{ i }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
             
             <!-- Button -->
             <div class="form-group">

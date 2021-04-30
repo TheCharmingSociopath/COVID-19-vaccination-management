@@ -120,18 +120,21 @@ def AppointmentBookedView(request,centre,date,time,aadhar):
     return render(request, "appointment-booked.html", {'centre_add' : centre_add, 'date' : date, 'time' : time})
 
 def AdminDistributeView(request):
+    global CURRENT_ACTIVE_PRIORITY
     if request.method == 'POST':
         form = AdminForm(request.POST, request.FILES)
         if form.is_valid():
             data = form.cleaned_data
             vaccine_number = data['vaccine_number']
+            priority = data['priority']
+            SetCurrentActivePriority(priority)
             DistributeCenterToState(vaccine_number)
             return HttpResponseRedirect(reverse('admin')) ## Redirect to the page with a form
         else:
             pass
     else: # GET request
         centre_vaccine_count = GetCenterVaccinationStore()
-        return render(request, "admin-distribute.html", {'centre_vaccine_count': centre_vaccine_count, 'current_active_priority' : CURRENT_ACTIVE_PRIORITY})
+        return render(request, "admin-distribute.html", {'centre_vaccine_count': centre_vaccine_count, 'current_active_priority' : CURRENT_ACTIVE_PRIORITY, 'range' : range(1, 5)})
 
 
 def AdminView(request):
