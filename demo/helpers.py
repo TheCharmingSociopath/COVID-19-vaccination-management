@@ -31,7 +31,8 @@ def UpdatePriority(priority):
     CURRENT_ACTIVE_PRIORITY = priority
 
 def VaccineAvailabilityInDistrict(district_id):
-    center_list = {center.id : center.address for center in VaccinationCenter.objects.filter(district_id=district_id) if center.number_of_vaccines > 0}
+    # center_list = {center.id : center.address for center in VaccinationCenter.objects.filter(district_id=district_id) if center.number_of_vaccines > 0}
+    center_list = {center.id : center.address for center in VaccinationCenter.objects.filter(district_id=district_id) }
     return center_list
 
 def ReduceVaccineCountAtCenter(center_id):
