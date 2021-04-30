@@ -10,6 +10,11 @@ Not Eligible
 
 {% block content %}
 <div>
-    <p>You are not eligible</p> 
+    {% if flag == 1 %}
+        <p>You are not eligible</p>
+    {% endif %} 
+    {% if flag == 2 %}
+        <p>Wrong Aadhar Number</p>
+    {% endif %}
 <div>
 {% endblock %}
