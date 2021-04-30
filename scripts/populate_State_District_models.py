@@ -44,7 +44,7 @@ def PopulateState():
         number_of_vaccines = 0
         number_of_people_vaccinated = vac[state]
         state_code = state
-        _, _ = States.objects.get_or_create(name=name, number_of_active_cases=number_of_active_cases, number_of_people_vaccinated=number_of_people_vaccinated, number_of_vaccines=number_of_vaccines, state_code=state_code)
+        _, _ = States.objects.get_or_create(name=name, number_of_active_cases=number_of_active_cases, number_of_people_vaccinated=number_of_people_vaccinated, number_of_vaccines=number_of_vaccines, state_code=state)
 
 def PopulateDistrict(n):
     sids = [state for state in States.objects.all()]
@@ -56,4 +56,4 @@ def PopulateDistrict(n):
 
 if __name__ == "__main__":
     PopulateState()
-    PopulateDistrict(1000)
+    PopulateDistrict(100)

@@ -47,7 +47,6 @@ def DistributeCenterToState(number):
     distribution = { key : round(r[key] * number) for key in r }
     rem = number - sum(list(distribution.values()))
     distribution[STATES[-1]] += rem
-    print("done here")
     for state in STATES:
         new_vaccs = States.objects.get(state_code=state).number_of_vaccines + distribution[state]
         States.objects.filter(state_code=state).update(number_of_vaccines=new_vaccs)
@@ -119,12 +118,46 @@ def GetCenterVaccinationStore():
 
 def GetCentreAddress(centre):
     #get centre address from id
-    pass
+    return VaccinationCenter.objects.get(pk=centre).address
 
-def BookAppointmentAtVaccineCentre(centre,date,time,aadhar):
+def BookAppointmentAtVaccineCentre(centre, date, time, aadhar):
     #book appointment
-    pass
-
+    vcenter = VaccinationCenter.objects.get(pk=centre)
+    person = Population.objects.get(pk=aadhar)
+    if person.vaccination_status == "unregistered":
+        person.vaccination_status = "registered_1" 
+        person.vaccine_1_time = datetime.strptime(date + "-" + time, "%Y-%m-%d-%H:%M") # date = YYYY-M-D, time = 24hr
+    else:
+        person.vaccination_status = "registered_2"
+        person.vaccine_2_time = datetime.strptime(date + ":" + time, "%Y-%m-%d:%H:%M") # date = YYYY-M-D, time = 24hr
+    person.vaccination_center_chosen = centre
+    person.save()
 
 def UpdateVaccinationDate(aadhar, date):
-    pass
+    person = Population.objects.get(pk=aadhar)
+    if person.vaccination_status == "registered_1":
+        person.vaccination_status = "dose_1_administered"
+        person.vaccine_1_time = date
+    else:
+        person.vaccination_status = "vaccinated"
+        person.vaccine_2_time = date
+    person.save()
+
+def GetDoseInformation(adhaar): 
+    ## -> returns 1 if unregistered, 2 if registered for dose 1, 3 if dose 1 administered, 4 if registered for dose 2, 5 if vaccinated
+    status = Population.objects.get(pk=adhaar).vaccination_status
+    if status == "unregistered":
+        return 1
+    if status == "registered_1":
+        return 2
+    if status == "dose_1_administered":
+        return 3
+    if status == "registered_2":
+        return 4
+    if status == "vaccinated":
+        return 5
+
+def AadharExists(aadhar):
+    if Population.objects.filter(aadhar=aadhar).count() != 0:
+        return True
+    return False

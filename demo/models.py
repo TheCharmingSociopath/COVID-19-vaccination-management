@@ -16,7 +16,7 @@ class Districts(models.Model):
     state = models.ForeignKey(States, on_delete=models.CASCADE)
 
 class Population(models.Model):
-    vaccination_status_choices = (("unregistered", "Unregistered"), ("registered_1", "Registered for Dose 1"), ("registered_2", "Registered for Dose 2"), ("vaccinated", "Vaccinated"))
+    vaccination_status_choices = (("unregistered", "Unregistered"), ("registered_1", "Registered for Dose 1"), ("dose_1_administered", "Dose 1 administered"), ("registered_2", "Registered for Dose 2"), ("vaccinated", "Vaccinated"))
     profession_choices = (("medical_worker", "Medical Worker"), ("teacher", "Teacher"))
     adhaar = models.CharField(max_length=20, primary_key=True)
     name = models.CharField(max_length=255)
@@ -29,6 +29,7 @@ class Population(models.Model):
     vaccination_status = models.CharField(max_length=255, choices=vaccination_status_choices)
     vaccine_1_time = models.DateTimeField()
     vaccine_2_time = models.DateTimeField()
+    vaccination_center_chosen = models.IntegerField(default=0)
 
 class VaccinationCenter(models.Model):
     district = models.ForeignKey(Districts, on_delete=models.CASCADE)
