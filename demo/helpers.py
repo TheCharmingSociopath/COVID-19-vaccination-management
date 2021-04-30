@@ -124,3 +124,7 @@ def GetCentreAddress(centre):
 def BookAppointmentAtVaccineCentre(centre,date,time):
     #book appointment
     pass
+
+
+def UpdateVaccinationDate(aadhar, date):
+    pass

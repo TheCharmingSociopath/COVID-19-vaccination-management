@@ -86,6 +86,9 @@ def VaccinationCentre(request):
             status = data['status']
             print(aadhar)
             url = 'VaccineCentreUpdateStatus'
+            # reduce vaccine count by one
+            # ReduceVaccineCountAtCenter(center_id)
+            # UpdateVaccinationDate(aadhar, datetime.now)
             return HttpResponseRedirect(reverse(url,args=[aadhar, centre_id, status])) 
         else:
             pass
