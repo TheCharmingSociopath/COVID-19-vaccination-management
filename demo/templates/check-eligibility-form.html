@@ -31,15 +31,10 @@ Check Eligibility
             <div class="col-md-4 selectContainer">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span>
-                    <select name="district" class="form-control selectpicker" required>
-                        <option value="">Select your current District</option>
-                        <option>District 1</option>
-                        <option>District 2</option>
-                        <option>District 3</option>
-                        <option>District 4</option>
-                        <option>District 5</option>
-                        <option>District 6</option>
-                        <option>District 7</option>
+                    <select name="district_id" class="form-control selectpicker" required>
+                        {% for district_name, district_id in district.items %}
+                            <option value="{{ district_id }}">{{ district_name }}</option>
+                        {% endfor %}
                     </select>
                 </div>
             </div>

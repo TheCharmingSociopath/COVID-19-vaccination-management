@@ -19,16 +19,17 @@ from django.urls import include, path
 from demo import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('', views.HomeView, name='home'),
-    path('AppointmentBooked/<str:centre>/<str:date>/<str:time>/', views.AppointmentBookedView, name='AppointmentBooked'),
+    path('admin/', views.AdminView, name='admin'),
+    path('adminDistribute/', views.AdminDistributeView, name='adminDistribute'),
+    path('AppointmentBooked/<str:centre>/<str:date>/<str:time>/<str:aadhar>', views.AppointmentBookedView, name='AppointmentBooked'),
     path('StatewiseCovidStats/', views.StatewiseCovidStatsView, name='StatewiseCovidStats'),
     path('StateVaccineStats/', views.StateVaccineStatsView, name='StateVaccineStats'),
     path('DistrictwiseCovidStats/', views.DistrictwiseCovidStatsView, name='DistrictwiseCovidStats'),
     path('DistrictwiseVaccineStats/', views.DistrictwiseVaccineStatsView, name='DistrictwiseVaccineStats'),
     path('CheckEligibilityForm/', views.CheckEligibilityFormView, name='CheckEligibilityForm'),
-    path('EligibleForVaccine/<str:district>/<str:aadhar>', views.EligibleForVaccine, name='EligibleForVaccine'),
+    path('EligibleForVaccine/<int:district_id>/<str:aadhar>', views.EligibleForVaccine, name='EligibleForVaccine'),
     path('NotEligibleForVaccine/', views.NotEligibleForVaccine, name='NotEligibleForVaccine'),
     path('VaccinationCentre/', views.VaccinationCentre, name='VaccinationCentre'),
-    path('VaccineCentreUpdateStatus/', views.VaccineCentreUpdateStatus, name='VaccineCentreUpdateStatus')
+    path('VaccineCentreUpdateStatus/<str:aadhar>/<str:centre_id>/<str:status>/', views.VaccineCentreUpdateStatus, name='VaccineCentreUpdateStatus')
 ]

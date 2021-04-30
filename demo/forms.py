@@ -10,10 +10,19 @@ class CheckEligibilityForm(forms.Form):
     #     super(CheckEligibilityForm, self).__init__(*args, **kwargs)
 
     aadhar = forms.CharField(max_length=20)
-    district = forms.CharField(label = 'district', max_length = 100)
+    district_id = forms.IntegerField(label = 'district_id')
 
 
 class RegisterForVaccine(forms.Form):
     centre = forms.CharField(max_length = 300)
     date = forms.DateField()
     time = forms.TimeField(widget=forms.TimeInput(format='%H:%M'))
+
+class AdminForm(forms.Form):
+    vaccine_number = forms.IntegerField()
+
+class UpdateVaccineForm(forms.Form):
+    aadhar = forms.CharField(max_length=20)
+    centre_id = forms.CharField(max_length=20)
+    status = forms.CharField(max_length=20)
+ 

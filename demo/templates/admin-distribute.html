@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Admin
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="homeTitle">Admin Portal</div>
+    <div>Centre Vaccine Count : {{ centre_vaccine_count }}</div>
+    <div>
+        <form class="well form-horizontal formClass" method="post"  id="eligibility_form">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label class="col-md-4 control-label">Number of vaccine to be distributed</label>  
+                <div class="col-md-4 inputGroupContainer">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input  name="vaccine_number" class="form-control"  type="text" required>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Button -->
+            <div class="form-group">
+                <label class="col-md-4 control-label"></label>
+                <div class="col-md-4">
+                    <input type="submit" value="Submit" class="btn btn-primary">
+                </div>
+            </div>
+        </form>
+    </div>
+<div>
+{% endblock %}
