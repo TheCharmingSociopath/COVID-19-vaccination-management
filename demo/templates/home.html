@@ -6,11 +6,41 @@ Home
 {% endblock %}
 
 {% block header %}
+    <style>
+        .container{
+            margin: 0px;
+            padding: 0px;
+        }
+        .homeDiv{
+            display: flex;
+            flex-direction: row;
+            align-self: center;
+            justify-self: center;
+            margin-top: 100px;
+            margin-left: 250px;
+            width: 120%;
+            justify-content: center;
+            align-items: center;
+
+        }
+        .homeTitle{
+            text-align: center;
+            font-size: 100px;
+            margin-top: 30px;
+            margin-right: 50px;
+        }
+        .homeImage{
+            text-align: center;
+        }
+    </style>
 {% endblock %}
 
 
 {% block content %}
 <div class="container">
-    <div class="homeTitle">India Vaccination Portal</div>
+    <div class="homeDiv">
+        <div class="homeTitle">Pan-India Vaccination Portal</div>
+        <div class="homeImage"><img src="{% static 'images/home.jpg' %}" width="1000" height="500"/></div>
+    </div>
 </div>
 {% endblock %}
