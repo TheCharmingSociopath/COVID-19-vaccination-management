@@ -41,7 +41,6 @@ def VaccinationCentre(request):
     # process csv into a list called lst
     # bind lst to request and return
     if request.method == 'POST':
-        # form = CheckAadarNumber  ye baad me kardena warna merge conflict 
         form = UpdateVaccineForm(request.POST, request.FILES)
         if form.is_valid():
             # process form
@@ -49,11 +48,10 @@ def VaccinationCentre(request):
             aadhar = data['aadhar']
             centre_id = data['centre_id']
             status = data['status']
-            # print(aadhar)
             url = 'VaccineCentreUpdateStatus'
             # reduce vaccine count by one
-            # ReduceVaccineCountAtCenter(center_id)
-            # UpdateVaccinationDate(aadhar, datetime.now)
+            ReduceVaccineCountAtCenter(centre_id)
+            UpdateVaccinationDate(aadhar, datetime.now())
             return HttpResponseRedirect(reverse(url,args=[aadhar, centre_id, status])) 
         else:
             pass
@@ -62,7 +60,8 @@ def VaccinationCentre(request):
 
 
 def VaccineCentreUpdateStatus(request, aadhar, centre_id, status):
-    return render(request, "vaccine-centre-update-status.html", {"aadhar":aadhar, "centre_id":centre_id, "status":status})
+    state_name = GetState(centre_id)
+    return render(request, "vaccine-centre-update-status.html", {"aadhar":aadhar, "centre_id":centre_id, "status":status, "state_name" : state_name})
 
 ## END OF SARTHAK AREA
 
@@ -91,7 +90,6 @@ def CheckEligibilityFormView(request):
     else: # GET request
         form = CheckEligibilityForm()
         district = GetListOfDistricts()
-        # print("district = ", district)
         return render(request, "check-eligibility-form.html", {'form' : form, 'district' : district})
 
 def EligibleForVaccine(request, district_id, aadhar):
@@ -118,7 +116,6 @@ def NotEligibleForVaccine(request, flag):
 def AppointmentBookedView(request,centre,date,time,aadhar):
     centre_add = GetCentreAddress(centre)
     time = time[:-3]
-    print("time = ", time)
     BookAppointmentAtVaccineCentre(centre,date,time,aadhar)
     return render(request, "appointment-booked.html", {'centre_add' : centre_add, 'date' : date, 'time' : time})
 

@@ -2,10 +2,15 @@ from .models import *
 from collections import Counter
 from datetime import timedelta, datetime
 import copy, csv
+from VaccineDistribution.settings import DEBUG
 
+
+NUMBER_OF_PEOPLE_BUFFER = 0
+if DEBUG:
+    NUMBER_OF_PEOPLE_BUFFER = 10
 
 CURRENT_ACTIVE_PRIORITY = 1
-LAST_DISPATCH = 0
+LAST_DISPATCH = datetime.now()
 STATES = ['IN-AN', 'IN-AP', 'IN-AR', 'IN-AS', 'IN-BR', 'IN-CH', 'IN-CT', 'IN-DN', 'IN-DL', 'IN-GA', 'IN-GJ', 'IN-HR', 'IN-HP', 'IN-JK', 'IN-JH', 'IN-KA', 'IN-KL', 'IN-LA', 'IN-LD', 'IN-MP', 'IN-MH', 'IN-MN', 'IN-ML', 'IN-MZ', 'IN-NL', 'IN-OR', 'IN-PY', 'IN-PB', 'IN-RJ', 'IN-SK', 'IN-TN', 'IN-TG', 'IN-TR', 'IN-UP', 'IN-UT', 'IN-WB']
 PREVIOUS_ACTIVE_CASES = {}
 WEIGHT1 = 0.6 # Ratio of Population
@@ -14,7 +19,6 @@ WEIGHT3 = 0.3 # Gradient of active cases
 
 def CheckEligibilityHelper(aadhar, district):
     priority = Population.objects.filter(adhaar=aadhar)[0].priority
-    print("priority = ", priority)
     if priority <= GetCurrentPriority(district):
         return True
     return False
@@ -32,7 +36,7 @@ def VaccineAvailabilityInDistrict(district_id):
 def ReduceVaccineCountAtCenter(center_id):
     center = VaccinationCenter.objects.get(pk=center_id)
     center.number_of_vaccines = center.number_of_vaccines - 1
-    state = States.objects.get(pk=center.state)
+    state = States.objects.get(pk=center.state.pk)
     state.number_of_vaccines = state.number_of_vaccines - 1
     state.number_of_people_vaccinated = state.number_of_people_vaccinated + 1
     state.save()
@@ -56,6 +60,7 @@ def DistributeCenterToState(number):
     # return distribution
 
 def StatewisePopulation():
+    global NUMBER_OF_PEOPLE_BUFFER
     lst = []
     for person in Population.objects.all():
         if person.priority <= CURRENT_ACTIVE_PRIORITY and person.vaccination_status != "vaccinated":
@@ -63,8 +68,18 @@ def StatewisePopulation():
     statewise_population = dict(Counter(lst))
     for key in STATES:
         if key not in statewise_population:
-            statewise_population[key] = 5
+            statewise_population[key] = NUMBER_OF_PEOPLE_BUFFER
     return statewise_population, Normalise(copy.deepcopy(statewise_population))
+
+def StatewiseTotalPopulation():
+    lst = []
+    for person in Population.objects.all():
+        lst.append(person.state.state_code)
+    statewise_population = dict(Counter(lst))
+    for key in STATES:
+        if key not in statewise_population:
+            statewise_population[key] = 0
+    return statewise_population
 
 def StatewiseVaccinationCenterPopulationRatio(statewise_population):
     lst = [center.state.state_code for center in VaccinationCenter.objects.all()]
@@ -73,16 +88,17 @@ def StatewiseVaccinationCenterPopulationRatio(statewise_population):
     return Normalise(ret)
 
 def StatewiseInfectionGradient():
-    global LAST_DISPATCH, PREVIOUS_ACTIVE_CASES
+    global LAST_DISPATCH, PREVIOUS_ACTIVE_CASES, NUMBER_OF_PEOPLE_BUFFER
     number_of_active_cases = {state.state_code : state.number_of_active_cases for state in States.objects.all() }
 
-    if LAST_DISPATCH == 0: # Return the current infection count the first time
+    number_of_days = (datetime.now() - LAST_DISPATCH).days
+
+    if number_of_days == 0: # Return the current infection count the first time
         PREVIOUS_ACTIVE_CASES = number_of_active_cases
         LAST_DISPATCH = datetime.now()
         return Normalise(number_of_active_cases)
     ## Return gradient number of active cases otherwise
-    number_of_days = (datetime.now() - LAST_DISPATCH).days + 5
-    grad = { key : (number_of_active_cases[key]+5 - PREVIOUS_ACTIVE_CASES[key]) / (number_of_days) for key in STATES }
+    grad = { key : (number_of_active_cases[key] - PREVIOUS_ACTIVE_CASES[key] + NUMBER_OF_PEOPLE_BUFFER) / (number_of_days) for key in STATES }
     PREVIOUS_ACTIVE_CASES = number_of_active_cases
     LAST_DISPATCH = datetime.now()
     return Normalise(grad)
@@ -101,7 +117,7 @@ def GetListOfDistricts():
 
 def GetStateWiseDistribution():
     ret = []
-    population, _ = StatewisePopulation()
+    population = StatewiseTotalPopulation()
     for st in STATES:
         state = States.objects.get(state_code=st)
         ret.append({
@@ -183,3 +199,8 @@ def PrepareDistrictCovidCasesActiveMap():
 
 def PrepareDistrictVaccinatedActiveMap():
     pass
+
+def GetState(centre_id):
+    state_id = VaccinationCenter.objects.get(pk=centre_id).state.id
+    state_name = States.objects.get(pk=state_id).name
+    return state_name
