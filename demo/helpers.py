@@ -1,7 +1,7 @@
 from .models import *
 from collections import Counter
 from datetime import timedelta, datetime
-import copy
+import copy, csv
 
 
 CURRENT_ACTIVE_PRIORITY = 1
@@ -158,6 +158,28 @@ def GetDoseInformation(adhaar):
         return 5
 
 def AadharExists(aadhar):
-    if Population.objects.filter(aadhar=aadhar).count() != 0:
+    if Population.objects.filter(pk=aadhar).count() != 0:
         return True
     return False
+
+def PrepareStateCovidCasesActiveMap():
+    header = ["State_code", "Active"]
+    data = [[state.state_code, state.number_of_active_cases] for state in States.objects.all()]
+    with open ('static/files/active_map.csv', 'w') as fil:
+        writer = csv.writer(fil)
+        writer.writerow(header)
+        writer.writerows(data)
+
+def PrepareStateVaccinatedActiveMap():
+    header = ["State_code", "Total Individuals Vaccinated"]
+    data = [[state.state_code, state.number_of_people_vaccinated] for state in States.objects.all()]
+    with open ('static/files/active_map_vaccinated.csv', 'w') as fil:
+        writer = csv.writer(fil)
+        writer.writerow(header)
+        writer.writerows(data)
+
+def PrepareDistrictCovidCasesActiveMap():
+    pass
+
+def PrepareDistrictVaccinatedActiveMap():
+    pass
