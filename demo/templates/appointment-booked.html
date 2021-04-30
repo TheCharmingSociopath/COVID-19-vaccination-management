@@ -6,12 +6,20 @@ Appointment Booked
 {% endblock %}
 
 {% block header %}
+    <style>
+        .countDiv{
+            font-size: 20px;
+            margin: 20px 0px;
+            font-weight: bold;
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+        }
+    </style>
 {% endblock %}
 
 
 {% block content %}
 <div class="container">
-    <div>
+    <div class="countDiv">
         Your appointment is booked at {{ centre_add }} for {{ date }} at {{ time }}
     </div>
 <div>

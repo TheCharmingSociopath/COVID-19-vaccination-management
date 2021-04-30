@@ -6,13 +6,22 @@ Admin
 {% endblock %}
 
 {% block header %}
+    <style>
+        .countDiv{
+            font-size: 20px;
+            margin: 20px 0px;
+            font-weight: bold;
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+        }
+    </style>
+
 {% endblock %}
 
 
 {% block content %}
 <div class="container">
     <div class="homeTitle">Admin Portal</div>
-    <div>Centre Vaccine Count : {{ centre_vaccine_count }}</div>
+    <div class="countDiv">Centre Vaccine Count : {{ centre_vaccine_count }}</div>
     <div>
         <form class="well form-horizontal formClass" method="post"  id="eligibility_form">
             {% csrf_token %}

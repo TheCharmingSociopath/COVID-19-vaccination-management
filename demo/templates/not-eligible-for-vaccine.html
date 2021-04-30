@@ -6,15 +6,23 @@ Not Eligible
 {% endblock %}
 
 {% block header %}
+    <style>
+        .divText{
+            font-size: 30px;
+            color: red;
+            text-align: center;
+            margin-top: 100px;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
-<div>
+<div class="container">
     {% if flag == 1 %}
-        <p>You are not eligible</p>
+        <div class="divText">You are currently not eligible for vaccination.</div>
     {% endif %} 
     {% if flag == 2 %}
-        <p>Wrong Aadhar Number</p>
+        <div class="divText">Wrong Aadhar Number! Please Verify.</div>
     {% endif %}
 <div>
 {% endblock %}
