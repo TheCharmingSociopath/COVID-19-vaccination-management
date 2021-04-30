@@ -17,7 +17,6 @@ def StatewiseCovidStatsView(request): # How many vaccinated
     # download csv that has covid case details
     data = pd.read_csv('state_wise.csv', sep=',')
     row_iter = data.iterrows()
-    States.objects.all().delete()
     STATES = [
             States(
                 name = row['State'],
@@ -41,7 +40,6 @@ def StateVaccineStatsView(request):
     # console.log("bakaa")
     data = pd.read_csv('cowin_vaccine_data_statewise.csv', sep=',')
     row_iter = data.iterrows()
-    States.objects.all().delete()
     STATES = [
             States(
                 name = row['State'],
@@ -125,7 +123,7 @@ def CheckEligibilityFormView(request):
     else: # GET request
         form = CheckEligibilityForm()
         district = GetListOfDistricts()
-        # print("district = ", district)
+        print("district = ", district)
         return render(request, "check-eligibility-form.html", {'form' : form, 'district' : district})
 
 def EligibleForVaccine(request, district_id, aadhar):
@@ -137,7 +135,7 @@ def EligibleForVaccine(request, district_id, aadhar):
             centre = data['centre']
             date = data['date']
             time = data['time']
-            return HttpResponseRedirect(reverse('AppointmentBooked',args=[centre,date,time])) ## Redirect to the page with a form
+            return HttpResponseRedirect(reverse('AppointmentBooked',args=[centre,date,time,aadhar])) ## Redirect to the page with a form
         else:
             # error page
             pass
@@ -151,12 +149,12 @@ def EligibleForVaccine(request, district_id, aadhar):
 def NotEligibleForVaccine(request):
     return render(request, "not-eligible-for-vaccine.html")
 
-def AppointmentBookedView(request,centre,date,time):
+def AppointmentBookedView(request,centre,date,time,aadhar):
     #function to get centre address
     # centre_add = GetCentreAddress(centre)
     centre_add = "temp"
     #add this to database
-    #BookAppointmentAtVaccineCentre(centre,date,time)
+    #BookAppointmentAtVaccineCentre(centre,date,time,aadhar)
     return render(request, "appointment-booked.html", {'centre_add' : centre_add, 'date' : date, 'time' : time})
 
 def AdminDistributeView(request):

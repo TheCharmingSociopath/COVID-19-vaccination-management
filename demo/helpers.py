@@ -121,7 +121,7 @@ def GetCentreAddress(centre):
     #get centre address from id
     pass
 
-def BookAppointmentAtVaccineCentre(centre,date,time):
+def BookAppointmentAtVaccineCentre(centre,date,time,aadhar):
     #book appointment
     pass
 
