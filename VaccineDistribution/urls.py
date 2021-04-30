@@ -31,5 +31,5 @@ urlpatterns = [
     path('EligibleForVaccine/<int:district_id>/<str:aadhar>', views.EligibleForVaccine, name='EligibleForVaccine'),
     path('NotEligibleForVaccine/', views.NotEligibleForVaccine, name='NotEligibleForVaccine'),
     path('VaccinationCentre/', views.VaccinationCentre, name='VaccinationCentre'),
-    path('VaccineCentreUpdateStatus/', views.VaccineCentreUpdateStatus, name='VaccineCentreUpdateStatus')
+    path('VaccineCentreUpdateStatus/<str:aadhar>/<str:centre_id>/<str:status>/', views.VaccineCentreUpdateStatus, name='VaccineCentreUpdateStatus')
 ]

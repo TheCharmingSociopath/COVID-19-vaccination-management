@@ -20,3 +20,9 @@ class RegisterForVaccine(forms.Form):
 
 class AdminForm(forms.Form):
     vaccine_number = forms.IntegerField()
+
+class UpdateVaccineForm(forms.Form):
+    aadhar = forms.CharField(max_length=20)
+    centre_id = forms.CharField(max_length=20)
+    status = forms.CharField(max_length=20)
+ 

@@ -77,12 +77,24 @@ def VaccinationCentre(request):
     # bind lst to request and return
     if request.method == 'POST':
         # form = CheckAadarNumber  ye baad me kardena warna merge conflict 
-        return HttpResponseRedirect(reverse('VaccineCentreUpdateStatus'))
+        form = UpdateVaccineForm(request.POST, request.FILES)
+        if form.is_valid():
+            # process form
+            data = form.cleaned_data
+            aadhar = data['aadhar']
+            centre_id = data['centre_id']
+            status = data['status']
+            print(aadhar)
+            url = 'VaccineCentreUpdateStatus'
+            return HttpResponseRedirect(reverse(url,args=[aadhar, centre_id, status])) 
+        else:
+            pass
     else:
         return render(request, "vaccine-centre-index.html")
 
-def VaccineCentreUpdateStatus(request):
-    return render(request, "vaccine-centre-update-status.html")
+
+def VaccineCentreUpdateStatus(request, aadhar, centre_id, status):
+    return render(request, "vaccine-centre-update-status.html", {"aadhar":aadhar, "centre_id":centre_id, "status":status})
 
 ## END OF SARTHAK AREA
 
