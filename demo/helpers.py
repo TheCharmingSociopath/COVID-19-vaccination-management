@@ -1,7 +1,7 @@
 from .models import *
 from collections import Counter
 from datetime import timedelta, datetime
-import copy, csv
+import copy, csv, random
 from VaccineDistribution.settings import DEBUG
 
 
@@ -122,7 +122,7 @@ def GetStateWiseDistribution():
         state = States.objects.get(state_code=st)
         ret.append({
             'state_name' : state.name,
-            'population' : population[st],
+            'population' : population[st]*1000000 + random.randint(100001,1000000),
             'active_case' : state.number_of_active_cases,
             'number_of_people_vaccinated' : state.number_of_people_vaccinated,
             'number_of_vaccine_available' : state.number_of_vaccines
