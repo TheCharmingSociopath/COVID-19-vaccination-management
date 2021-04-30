@@ -9,6 +9,7 @@ class States(models.Model):
     number_of_vaccines = models.IntegerField(default=0)
     number_of_people_vaccinated = models.IntegerField(default=0)
     state_code = models.CharField(max_length=10, choices=state_codes, default="IN-AN")
+    state_population = models.IntegerField(default=0)
 
 class Districts(models.Model):
     name = models.CharField(max_length=255)
@@ -17,7 +18,7 @@ class Districts(models.Model):
 
 class Population(models.Model):
     vaccination_status_choices = (("unregistered", "Unregistered"), ("registered_1", "Registered for Dose 1"), ("dose_1_administered", "Dose 1 administered"), ("registered_2", "Registered for Dose 2"), ("vaccinated", "Vaccinated"))
-    profession_choices = (("medical_worker", "Medical Worker"), ("teacher", "Teacher"))
+    profession_choices = (("medical_worker", "Medical Worker"), ("teacher", "Teacher"), ("engineer", "Engineer"), ("student", "Student"))
     adhaar = models.CharField(max_length=20, primary_key=True)
     name = models.CharField(max_length=255)
     age = models.IntegerField()

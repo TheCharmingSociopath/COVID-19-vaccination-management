@@ -7,7 +7,7 @@ from VaccineDistribution.settings import DEBUG
 
 NUMBER_OF_PEOPLE_BUFFER = 0
 if DEBUG:
-    NUMBER_OF_PEOPLE_BUFFER = 10
+    NUMBER_OF_PEOPLE_BUFFER = 25
 
 CURRENT_ACTIVE_PRIORITY = 1
 LAST_DISPATCH = datetime.now()
@@ -61,10 +61,7 @@ def DistributeCenterToState(number):
 
 def StatewisePopulation():
     global NUMBER_OF_PEOPLE_BUFFER
-    lst = []
-    for person in Population.objects.all():
-        if person.priority <= CURRENT_ACTIVE_PRIORITY and person.vaccination_status != "vaccinated":
-            lst.append(person.state.state_code)
+    lst = [person.state.state_code for person in Population.objects.all() if person.priority <= CURRENT_ACTIVE_PRIORITY and person.vaccination_status != "vaccinated"]
     statewise_population = dict(Counter(lst))
     for key in STATES:
         if key not in statewise_population:
@@ -72,13 +69,7 @@ def StatewisePopulation():
     return statewise_population, Normalise(copy.deepcopy(statewise_population))
 
 def StatewiseTotalPopulation():
-    lst = []
-    for person in Population.objects.all():
-        lst.append(person.state.state_code)
-    statewise_population = dict(Counter(lst))
-    for key in STATES:
-        if key not in statewise_population:
-            statewise_population[key] = 0
+    statewise_population = { state.state_code : state.state_population for state in States.objects.all() }
     return statewise_population
 
 def StatewiseVaccinationCenterPopulationRatio(statewise_population):
@@ -90,7 +81,6 @@ def StatewiseVaccinationCenterPopulationRatio(statewise_population):
 def StatewiseInfectionGradient():
     global LAST_DISPATCH, PREVIOUS_ACTIVE_CASES, NUMBER_OF_PEOPLE_BUFFER
     number_of_active_cases = {state.state_code : state.number_of_active_cases for state in States.objects.all() }
-
     number_of_days = (datetime.now() - LAST_DISPATCH).days
 
     if number_of_days == 0: # Return the current infection count the first time
@@ -122,7 +112,7 @@ def GetStateWiseDistribution():
         state = States.objects.get(state_code=st)
         ret.append({
             'state_name' : state.name,
-            'population' : population[st]*1000000 + random.randint(100001,1000000),
+            'population' : population[st],
             'active_case' : state.number_of_active_cases,
             'number_of_people_vaccinated' : state.number_of_people_vaccinated,
             'number_of_vaccine_available' : state.number_of_vaccines
@@ -204,3 +194,4 @@ def GetState(centre_id):
     state_id = VaccinationCenter.objects.get(pk=centre_id).state.id
     state_name = States.objects.get(pk=state_id).name
     return state_name
+

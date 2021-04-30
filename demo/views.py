@@ -131,7 +131,7 @@ def AdminDistributeView(request):
             pass
     else: # GET request
         centre_vaccine_count = GetCenterVaccinationStore()
-        return render(request, "admin-distribute.html", {'centre_vaccine_count': centre_vaccine_count})
+        return render(request, "admin-distribute.html", {'centre_vaccine_count': centre_vaccine_count, 'current_active_priority' : CURRENT_ACTIVE_PRIORITY})
 
 
 def AdminView(request):

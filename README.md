@@ -4,7 +4,7 @@
 
 # Setting up the data
 
-`bash initialize.sh`
+`bash ./setup.sh`
 
 # Usage
 
