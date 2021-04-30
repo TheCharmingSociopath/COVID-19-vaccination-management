@@ -29,7 +29,7 @@ urlpatterns = [
     path('DistrictwiseVaccineStats/', views.DistrictwiseVaccineStatsView, name='DistrictwiseVaccineStats'),
     path('CheckEligibilityForm/', views.CheckEligibilityFormView, name='CheckEligibilityForm'),
     path('EligibleForVaccine/<int:district_id>/<str:aadhar>', views.EligibleForVaccine, name='EligibleForVaccine'),
-    path('NotEligibleForVaccine/', views.NotEligibleForVaccine, name='NotEligibleForVaccine'),
+    path('NotEligibleForVaccine/<int:flag>', views.NotEligibleForVaccine, name='NotEligibleForVaccine'),
     path('VaccinationCentre/', views.VaccinationCentre, name='VaccinationCentre'),
     path('VaccineCentreUpdateStatus/<str:aadhar>/<str:centre_id>/<str:status>/', views.VaccineCentreUpdateStatus, name='VaccineCentreUpdateStatus')
 ]
