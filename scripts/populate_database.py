@@ -106,6 +106,6 @@ if __name__ == "__main__":
     district = Districts(name="Noida", number_of_active_cases=7542, state=state)
     district.save()
     shivam = Population(adhaar="111111111111", name="Shivam Bansal", age=20, address="Mukul Mahal, Gau Vihar Colony, Noida", district=district, state=state, profession="student", priority=4, vaccination_status="unregistered", vaccine_1_time=datetime.now(), vaccine_2_time=datetime.now(), vaccination_center_chosen=0)
-    vacc = VaccinationCenter(district=district, state=state, number_of_vaccines=0, address="BT Hospital, Noida")
+    vacc = VaccinationCenter(district=district, state=state, number_of_vaccines=20, address="BT Hospital, Noida")
     shivam.save()
     vacc.save()
