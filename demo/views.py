@@ -15,58 +15,26 @@ def HomeView(request):
 ## Use helpers.py for all accessory functions
 def StatewiseCovidStatsView(request): # How many vaccinated
     # download csv that has covid case details
-    data = pd.read_csv('state_wise.csv', sep=',')
-    row_iter = data.iterrows()
-    STATES = [
-            States(
-                name = row['State'],
-                number_of_active_cases = row['Active'],
-                )
-                for index, row in row_iter
-    ]
-    States.objects.bulk_create(STATES)
-
-    data = pd.read_csv('state_wise.csv')
-    data = data[['State_code','Active']]
-    # data.drop(['State'])
-    data.to_csv('static/files/active_map.csv', index = False)
-    # data.to_csv('assets/files/active_map.csv', index = False)
-    # process csv into a list called lst
-    # bind lst to request and return
+    PrepareStateCovidCasesActiveMap()
     return render(request, "statewise-covid-stats.html")
 
 def StateVaccineStatsView(request):
     # download csv that has vaccination details
-    # console.log("bakaa")
-    data = pd.read_csv('cowin_vaccine_data_statewise.csv', sep=',')
-    row_iter = data.iterrows()
-    STATES = [
-            States(
-                name = row['State'],
-                number_of_active_cases = row['Total Individuals Vaccinated'],
-                )
-                for index, row in row_iter 
-    ]
-    States.objects.bulk_create(STATES)
-
-    data = pd.read_csv('cowin_vaccine_data_statewise.csv')
-    data = data[['State_code','Total Individuals Vaccinated']]
-    # data.drop(['State'])
-    data.to_csv('static/files/active_map_vaccinated.csv', index = False)
-    # process csv into a list called lst
-    # bind lst to request and return
+    PrepareStateVaccinatedActiveMap()
     return render(request, "statewise-vaccination-stats.html")
 
 def DistrictwiseCovidStatsView(request): # How many vaccinated
     # download csv that has covid case details
     # process csv into a list called lst
     # bind lst to request and return
+    PrepareDistrictCovidCasesActiveMap()
     return render(request, "districtwise-covid-stats.html")
 
 def DistrictwiseVaccineStatsView(request):
     # download csv that has vaccination details
     # process csv into a list called lst
     # bind lst to request and return
+    PrepareDistrictVaccinatedActiveMap()
     return render(request, "districtwise-vaccination-stats.html")
 
 def VaccinationCentre(request):
