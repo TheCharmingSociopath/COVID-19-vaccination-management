@@ -44,7 +44,7 @@ Admin
                         <select name="priority" class="form-control selectpicker" required>
                             {% for i in range %}
                                 {% if current_active_priority == i %}
-                                    <option selected value="{{ i }}">{{ i }}</option>
+                                    <option selected="selected" value="{{ i }}">{{ i }}</option>
                                 {% else %}
                                     <option value="{{ i }}">{{ i }}</option>
                                 {% endif %}
